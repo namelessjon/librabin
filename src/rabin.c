@@ -10,7 +10,7 @@ static void pregenerate_polys(rabin_fingerprinter_t *fp) {
     // Calculates result = prime ^ windowsize
     // After that multiplies all 256 bytes with result
     unsigned long long result = 1;
-    int i;
+    unsigned int i;
     for (i=0; i<fp->window_size; i++)
         result *= fp->prime;
 
@@ -23,15 +23,13 @@ static void pregenerate_polys(rabin_fingerprinter_t *fp) {
 static void create_rabin_ring(rabin_fingerprinter_t *fp) {
     // initializes all the values to 0 and sets things up for cycling of the
     // hash window
-    int i = 0;
+    unsigned int i = 0;
     for (i = 0; i < (fp->window_size-1); i++) {
         (fp->cycle+i)->next = (fp->cycle+i+1);
         (fp->cycle+i)->value = 0;
     }
     // close ring
     (fp->cycle+fp->window_size-1)->next = fp->cycle;
-    
-
 }
 
 void rabin_fingerprinter_reset(rabin_fingerprinter_t *fp) {
@@ -55,7 +53,6 @@ rabin_fingerprinter_t* rabin_fingerprinter_init(unsigned long min_block_size,
 
     rabin_fingerprinter_t * fp = malloc(sizeof(rabin_fingerprinter_t));
     if (!fp) {
-        perror("rabin_fingerprinter_init");
         return 0;
     }
 
@@ -75,13 +72,11 @@ rabin_fingerprinter_t* rabin_fingerprinter_init(unsigned long min_block_size,
     fp->buffer       = malloc(fp->max_blk_sz);
     if (!fp->buffer) {
         rabin_fingerprinter_free(fp);
-        perror("rabin_fingerprinter_init");
         return 0;
     }
     fp->input_buffer = malloc(fp->min_blk_sz);
     if (!fp->input_buffer) {
         rabin_fingerprinter_free(fp);
-        perror("rabin_fingerprinter_init");
         return 0;
     }
 
