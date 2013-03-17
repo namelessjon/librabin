@@ -49,7 +49,7 @@ void rabin_fingerprinter_free(rabin_fingerprinter_t * fingerprinter);
 
 // fingerprint a given file
 int fingerprint_file(rabin_fingerprinter_t * fingerprinter,
-                     FILE *file,
+                     int fileno,
                      rfp_chunk_callback cb,
                      void *userdata);
 

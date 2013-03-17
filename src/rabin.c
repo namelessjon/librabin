@@ -2,8 +2,8 @@
  *
  */
 
-#include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "rabin.h"
 
 static void pregenerate_polys(rabin_fingerprinter_t *fp) {
@@ -107,22 +107,23 @@ void rabin_fingerprinter_free(rabin_fingerprinter_t * fp) {
 }
 
 int fingerprint_file(rabin_fingerprinter_t * fp,
-                     FILE *file,
+                     int fileno,
                      rfp_chunk_callback cb,
                      void *userdata) {
-    int ch; 
-    int i = 0, read = 0;
+    int ch;
+    int i = 0, nread = 0;
 
     // if there's no file or fingerprinter, give up
     // likewise, if there's no callback there isn't much point ...
-    if ((!fp)||(!file)||(!cb))
+    // TODO: check file handle is valid
+    if ((!fp)||(!cb))
         return 1;
 
     // read the file in slabs of the minimum block size into the input buffer
-    while (read = fread(fp->input_buffer, 1, fp->min_blk_sz, file)) {
+    while ((nread = read(fileno, fp->input_buffer, fp->min_blk_sz))) {
 
         // loop over the input buffer
-        for (i = 0; i < read; i++) {
+        for (i = 0; i < nread; i++) {
             // read off the buffer
             ch = fp->input_buffer[i];
 
