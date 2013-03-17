@@ -6,4 +6,4 @@ librabin.so.1.0.0: src/rabin.o Makefile
 	$(CC) -shared -Wl,-soname,$@ -o $@ $<
 
 librabin.so: librabin.so.1.0.0
-	ln -s $< $@
+	ln -sf $< $@
