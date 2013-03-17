@@ -6,6 +6,8 @@
 #include <unistd.h>
 #include "rabin.h"
 
+#define _READ_SIZE (32768)
+
 static void pregenerate_polys(rabin_fingerprinter_t *fp) {
     // Calculates result = prime ^ windowsize
     // After that multiplies all 256 bytes with result
@@ -75,11 +77,6 @@ rabin_fingerprinter_t* rabin_fingerprinter_init(unsigned long min_block_size,
         rabin_fingerprinter_free(fp);
         return 0;
     }
-    fp->input_buffer = malloc(fp->min_blk_sz);
-    if (!fp->input_buffer) {
-        rabin_fingerprinter_free(fp);
-        return 0;
-    }
 
     // reset to finish setup
     rabin_fingerprinter_reset(fp);
@@ -93,10 +90,6 @@ void rabin_fingerprinter_free(rabin_fingerprinter_t * fp) {
             free(fp->buffer);
             fp->buffer = NULL;
         }
-        if (fp->input_buffer) {
-            free(fp->input_buffer);
-            fp->input_buffer = NULL;
-        }
         free(fp);
         fp = NULL;
     }
@@ -108,6 +101,7 @@ int fingerprint_file(rabin_fingerprinter_t * fp,
                      void *userdata) {
     int ch;
     int i = 0, nread = 0;
+    unsigned char input_buffer[_READ_SIZE];
 
     // if there's no file or fingerprinter, give up
     // likewise, if there's no callback there isn't much point ...
@@ -116,12 +110,12 @@ int fingerprint_file(rabin_fingerprinter_t * fp,
         return 1;
 
     // read the file in slabs of the minimum block size into the input buffer
-    while ((nread = read(fileno, fp->input_buffer, fp->min_blk_sz))) {
+    while ((nread = read(fileno, input_buffer, _READ_SIZE))) {
 
         // loop over the input buffer
         for (i = 0; i < nread; i++) {
             // read off the buffer
-            ch = fp->input_buffer[i];
+            ch = input_buffer[i];
 
             // copy to the output buffer
             fp->buffer[fp->blk_sz] = ch;

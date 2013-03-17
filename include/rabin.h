@@ -28,7 +28,6 @@ typedef struct {
     struct rabin_node_t cycle[RAB_WINDOW_SIZE];
     struct rabin_node_t* curr;
     unsigned char      *buffer;
-    unsigned char      *input_buffer;
 
 } rabin_fingerprinter_t;
 
