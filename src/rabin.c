@@ -29,7 +29,8 @@ static void create_rabin_ring(rabin_fingerprinter_t *fp) {
         (fp->cycle+i)->value = 0;
     }
     // close ring
-    (fp->cycle+fp->window_size-1)->next = fp->cycle;
+    (fp->cycle+fp->window_size-1)->next  = fp->cycle;
+    (fp->cycle+fp->window_size-1)->value = 0;
 }
 
 void rabin_fingerprinter_reset(rabin_fingerprinter_t *fp) {
