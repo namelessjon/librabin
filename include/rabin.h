@@ -19,11 +19,11 @@ struct rabin_node_t {
 typedef struct {
     unsigned long long prime;
     unsigned long      window_size;
-    unsigned long long blk_sz;
-    unsigned long long fingerprint;
     unsigned long      min_blk_sz;
     unsigned long      avg_blk_sz;
     unsigned long      max_blk_sz;
+    unsigned long long blk_sz;
+    unsigned long long fingerprint;
     unsigned long long polynomial_map[256];
     struct rabin_node_t cycle[RAB_WINDOW_SIZE];
     struct rabin_node_t* curr;
