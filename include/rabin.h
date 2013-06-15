@@ -1,7 +1,3 @@
-/*
- *
- */
-
 #ifndef _RABIN_H
 #define _RABIN_H
 
