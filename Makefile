@@ -1,4 +1,6 @@
 
+.DEFAULT_GOAL := librabin.so
+
 src/rabin.o: src/rabin.c include/rabin.h Makefile
 	$(CC) -Iinclude -fPIC -g -c -Wall -Wextra $< -o $@
 
