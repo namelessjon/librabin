@@ -12,6 +12,16 @@ chucks and supports a configurable maximum and minimum block size.
 * Threadsafe (if used with one chunker per thread)
 * Very simple (one c file, one header)
 
+## How do I install it?
+
+That's pretty easy, after you've checked it out or downloaded a tag,  Just `cd` to the directory
+and then do the `make install` dance
+
+``` shell
+$ make
+# make install
+```
+
 
 ## How do I use it?
 
